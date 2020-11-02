@@ -2,7 +2,6 @@ pragma solidity >= 0.5.13 < 0.7.3;
 
 contract wallet{
     
-    uint min_balance = 100 ether; //min balance of required for wallet
     address admin;
     uint public balance;// Total balance of contract
     
@@ -28,8 +27,7 @@ contract wallet{
         info[msg.sender].name= u_name;
         info[msg.sender].password= u_password;
         info[msg.sender].dept= u_dept;
-        info[msg.sender].job_code= u_job_code;
-        info[msg.sender].emp_balance = min_balance; //user account already has some balance in 'JavaScript VM' which is initialized here. 
+        info[msg.sender].job_code= u_job_code; 
     }
     
     //checks login credentials
