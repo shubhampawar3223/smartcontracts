@@ -2,6 +2,7 @@ pragma solidity >= 0.5.13 < 0.7.3;
 
 contract wallet{
     
+    
     address admin;
     uint public balance;// Total balance of contract
     
@@ -14,8 +15,8 @@ contract wallet{
         uint emp_balance; //wallet balance of employee.
         uint credited;   //Amount credited by finance employee in wallet.
     }
-    //mapping of address of employee with employee structure
-    mapping(address => employee) public info;
+    
+    mapping(address => employee) public  info;
     
     //initialize admin
     constructor() public{
@@ -27,7 +28,8 @@ contract wallet{
         info[msg.sender].name= u_name;
         info[msg.sender].password= u_password;
         info[msg.sender].dept= u_dept;
-        info[msg.sender].job_code= u_job_code; 
+        info[msg.sender].job_code= u_job_code;
+        info[msg.sender].emp_balance ; 
     }
     
     //checks login credentials
