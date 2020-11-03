@@ -32,14 +32,8 @@ contract wallet{
         info[msg.sender].emp_balance ; 
     }
     
-    //checks login credentials
-    modifier login( uint u_password){
-        require(info[msg.sender].password== u_password ,"Unauthorized Login");
-        _;
-    }
-    
     //below function recieves ether in contract only by Finance employee i.e employees having job_code = "F1"
-    function recieveEther(uint u_password) public  payable login(u_password) {
+    function recieveEther(uint u_password) public  payable {
         require(keccak256(abi.encodePacked(info[msg.sender].job_code)) == keccak256(abi.encodePacked("F1")), "Restricted Entry");
         balance += msg.value; 
         info[msg.sender].credited += msg.value;
@@ -52,7 +46,7 @@ contract wallet{
     //job_code= "4A","4B","4C" => has limit of 5 ethers.
     //job_code= "5A","5B","5C" => has limit of 2 ethers.
     //job_code= "F1" has no limit on transaction amount.
-    function debitEther( uint amount, uint u_password) public login(u_password){ 
+    function debitEther( uint amount, uint u_password) public { 
         require(info[msg.sender].password== u_password ,"Unauthorized Login");
         require(keccak256(abi.encodePacked(info[msg.sender].job_code)) != keccak256(abi.encodePacked("")), "No details found.Please Register");
         
