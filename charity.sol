@@ -4,12 +4,12 @@ contract charity{
     address owner;
     address payable receiver;
     uint balance;
-    bool _isPause;
+    bool isPause = false;
     
     struct Donor{
         string name;
         bool terms_conditions;
-        uint amount;
+        uint donating_amount;
     }
     
     mapping(address => Donor) public donorLedger;
@@ -24,23 +24,34 @@ contract charity{
      _;
     }
     
+    function pause_contract(bool _isPause) public onlyOwner{
+        isPause = _isPause;
+    }
+    
     function setReceiver(address _addr) public onlyOwner{
         receiver =payable(_addr);
     }
     
     function registration(string memory _name, bool _terms_condition) public{
-        require(_terms_condition == true, "Please Accept,Terms And Conditions first");
+        require(isPause == false, "Registration service is temporary Unavailable.");
+        require(_terms_condition == true, "Please Accept,Terms And Conditions first.");
         donorLedger[msg.sender].name= _name;
         donorLedger[msg.sender].terms_conditions= _terms_condition;
     }
     
     function recieveEther() payable public{
+        require(isPause == false, "Donation service is temporary Unavailable.");
+        require(donorLedger[msg.sender].terms_conditions == true , "Register First!!");
         balance +=msg.value;
-        donorLedger[msg.sender].amount +=msg.value;
+        donorLedger[msg.sender].donating_amount +=msg.value;
         
     }
     
     function donate_to_reciever() public onlyOwner{
         receiver.transfer(balance);
+    }
+    
+    function destruct() public onlyOwner{
+        selfdestruct(receiver);
     }
 }
